@@ -4,7 +4,6 @@ import seaborn as sns
 import numpy as np
 from grapher import Grapher
 
-
 #Import data
 txt_dir = '/Users/carlkristoftessier/Documents/all_that_programming/summerJob2020/merged_annotatedPeaks.txt'
 df = pd.read_csv(txt_dir, sep='\t')
@@ -31,4 +30,4 @@ grapher.big_scatter(cols_to_graph,
                     shape=(2, 3),
                     fixed_y=0,
                     axis_names=axis_names,
-                    fig_name=fig_name)"""
+                    fig_name=fig_name)
