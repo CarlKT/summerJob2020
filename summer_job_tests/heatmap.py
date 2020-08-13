@@ -42,6 +42,7 @@ def create_heatmap_iris(results, features, labels):
     sns.heatmap(df_probas.T)
     plt.show
 
+
 def create_heatmap_tsv(file_path):
     significance = pd.read_csv(file_path, sep='\s', index_col=0)
     print(significance.head())
@@ -51,6 +52,7 @@ def create_heatmap_tsv(file_path):
     fig, ax = plt.subplots(figsize=(15, 4))
     sns.heatmap(significance.T)
     plt.show
+
 
 #create_heatmap_iris(results, features, labels)
 create_heatmap_tsv('Significance.tsv')
