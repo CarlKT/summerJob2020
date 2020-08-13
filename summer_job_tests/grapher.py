@@ -13,7 +13,11 @@ class Grapher:
         self.dtype = type(_input)
         self.figsize = figsize
 
-    #if self.dtype !=
+        #make sure the input is a DataFrame
+        if self.dtype != type(pd.DataFrame()):
+            raise TypeError(
+                'grapher input must be a DataFrame, got %s instead' %
+                self.dtype)
 
     def heatmap(self):
         _input, figsize = self._input, self.figsize
@@ -53,7 +57,7 @@ class Grapher:
             '#eaf202'
         ]
 
-        #indentify columns to use
+        #indentify columns to use and turn into a dictionnary
         features = []
         if len(axis_names) == len(cols) or len(axis_names) == 0:
             feature_names = axis_names
@@ -62,7 +66,7 @@ class Grapher:
                 feature_names.append(_input.columns[col])
         else:
             raise ValueError(
-                'axis_names not the correct length (must be 0 or the same as cols)'
+                'axis_names not the correct length (must be 0 or the same length as cols)'
             )
 
         feature_dict = {
@@ -71,15 +75,16 @@ class Grapher:
         }
 
         #Generate combinations
-        col_combi = list(itertools.combinations(feature_names, 2))
+        feat_combi = list(itertools.combinations(feature_names, 2))
 
+        #loop through axes and plot the proper cols
         index = 0
         for ax in fig.axes:
 
             #Use different variables based on what is fixed
             if fixed_x == None and fixed_y == None:
-                X_name = col_combi[index][0]
-                y_name = col_combi[index][1]
+                X_name = feat_combi[index][0]
+                y_name = feat_combi[index][1]
             elif fixed_x != None:
                 X_name = feature_names[fixed_x]
                 y_name = feature_names[index + 1]
@@ -104,10 +109,12 @@ class Grapher:
             dpi=600)
 
 
+#Just for testing stuff
 if __name__ == '__main__':
 
     df = pd.DataFrame([[1, 0, 0], [1, 1, 0], [0, 0, 1]])
     df.shape
+    empty = Grapher(0, (0, 0))
     grapher = Grapher(df, (12, 3))
     #print(grapher._input)
     print(grapher.big_scatter((0, 1, 2), (1, 3)))
