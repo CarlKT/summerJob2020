@@ -12,7 +12,6 @@ peak_score = pd.DataFrame(df['Peak Score'])
 tag_data = pd.DataFrame([df.iloc[:, -i] for i in range(1, 7)]).T
 data_to_plot = pd.concat([peak_score, tag_data], axis=1)
 log_data = np.log10(data_to_plot)
-log_data.head()
 
 figsize = (12, 6)
 axis_names = [
@@ -22,7 +21,6 @@ axis_names = [
 ]
 fig_name = 'Peak score for each motif tag count with log scaling'
 grapher = Grapher(log_data, figsize)
-#print(list(range(6)))
 grapher.big_scatter(list(range(7)),
                     shape=(2, 3),
                     fixed_y=0,

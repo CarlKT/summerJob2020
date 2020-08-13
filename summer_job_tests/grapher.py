@@ -40,6 +40,10 @@ class Grapher:
                     fixed_y=None,
                     axis_names=[],
                     fig_name=''):
+        """makes a series of scatter plots using any number of variables.
+        By default, it graphs every combination of variables, but it can also
+        support a fixed x axis or y axis."""
+
         _input, figsize = self._input, self.figsize
         fig, axes = plt.subplots(shape[0], shape[1], figsize=figsize)
 
@@ -51,7 +55,6 @@ class Grapher:
 
         #indentify columns to use
         features = []
-        print(len(axis_names), len(cols))
         if len(axis_names) == len(cols) or len(axis_names) == 0:
             feature_names = axis_names
             for col in cols:
@@ -69,9 +72,8 @@ class Grapher:
 
         #Generate combinations
         col_combi = list(itertools.combinations(feature_names, 2))
-        print(col_combi)
-        index = 0
 
+        index = 0
         for ax in fig.axes:
 
             #Use different variables based on what is fixed
