@@ -46,7 +46,8 @@ class Grapher:
         support a fixed x axis or y axis."""
 
         _input, fig = self._input, self.fig
-        axes = fig.subplots(shape[0], shape[1])
+        axes = fig.subplots(nrows=shape[0], ncols=shape[1], squeeze=True)
+        axes = axes.flatten()
         #instantiate colors
         colors = [
             '#f54242', '#ef42f5', '#56dbce', '#ffa600', '#9c00fc', '#00fc2a',
@@ -97,18 +98,15 @@ class Grapher:
             ax.set_xlabel(X_name)
             ax.set_ylabel(y_name)
             index += 1
-        self.fig.suptitle(fig_name)
+        fig.suptitle(fig_name)
 
 
 #Just for testing stuff
 if __name__ == '__main__':
 
+    out_dir = '/Users/carlkristoftessier/Documents/all_that_programming/summerJob2020/Figures/big_scatter.png'
     df = pd.DataFrame([[1, 0, 0], [1, 1, 0], [0, 0, 1]])
-    #df.shape
     grapher = Grapher(df, (12, 3))
-    grapher.big_scatter((0, 1, 2), (1, 3), fig_name='test')
+    grapher.big_scatter((0, 1, 2), (2, 2), fig_name='test')
     plt.show()
-    grapher.fig.savefig(
-        '/Users/carlkristoftessier/Documents/all_that_programming/summerJob2020/Figures/big_scatter.png',
-        bbox_inches="tight",
-        dpi=600)
+    #grapher.fig.savefig(out_dir, bbox_inches="tight", dpi=600)
