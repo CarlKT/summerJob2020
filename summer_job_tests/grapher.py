@@ -11,7 +11,7 @@ class Grapher:
     def __init__(self, _input, figsize):
         self._input = _input
         self.dtype = type(_input)
-        self.figsize = figsize
+        self.fig = plt.figure(figsize=figsize)
 
         #make sure the input is a DataFrame
         if self.dtype != type(pd.DataFrame()):
@@ -20,22 +20,19 @@ class Grapher:
                 self.dtype)
 
     def heatmap(self):
-        _input, figsize = self._input, self.figsize
-        fig, ax = plt.subplots(figsize=figsize)
+        _input, fig = self._input, self.fig
+        ax = fig.subplots()
         ax = sns.heatmap(_input)
-        plt.show()
 
     def violin_plot(self):
-        _input, figsize = self._input, self.figsize
-        fig, ax = plt.subplots(figsize=figsize)
-        sns.violinplot(_input)
-        plt.show()
+        _input, fig = self._input, self.fig
+        ax = fig.subplots()
+        ax = sns.violinplot(_input)
 
     def scatter(self, cols):
-        _input, figsize = self._input, self.figsize
-        fig, ax = plt.subplots(figsize=figsize)
+        _input, fig = self._input, self.fig
+        ax = fig.subplots()
         ax = sns.scatterplot(_input.iloc[:, cols[0]], _input.iloc[:, cols[1]])
-        plt.show()
 
     def big_scatter(self,
                     cols,
@@ -48,9 +45,8 @@ class Grapher:
         By default, it graphs every combination of variables, but it can also
         support a fixed x axis or y axis."""
 
-        _input, figsize = self._input, self.figsize
-        fig, axes = plt.subplots(shape[0], shape[1], figsize=figsize)
-
+        _input, fig = self._input, self.fig
+        axes = fig.subplots(shape[0], shape[1])
         #instantiate colors
         colors = [
             '#f54242', '#ef42f5', '#56dbce', '#ffa600', '#9c00fc', '#00fc2a',
@@ -79,7 +75,7 @@ class Grapher:
 
         #loop through axes and plot the proper cols
         index = 0
-        for ax in fig.axes:
+        for ax in axes:
 
             #Use different variables based on what is fixed
             if fixed_x == None and fixed_y == None:
@@ -101,20 +97,18 @@ class Grapher:
             ax.set_xlabel(X_name)
             ax.set_ylabel(y_name)
             index += 1
-        fig.suptitle(fig_name)
-        plt.show()
-        fig.savefig(
-            '/Users/carlkristoftessier/Documents/all_that_programming/summerJob2020/Figures/big_scatter.png',
-            bbox_inches="tight",
-            dpi=600)
+        self.fig.suptitle(fig_name)
 
 
 #Just for testing stuff
 if __name__ == '__main__':
 
     df = pd.DataFrame([[1, 0, 0], [1, 1, 0], [0, 0, 1]])
-    df.shape
-    empty = Grapher(0, (0, 0))
+    #df.shape
     grapher = Grapher(df, (12, 3))
-    #print(grapher._input)
-    print(grapher.big_scatter((0, 1, 2), (1, 3)))
+    grapher.big_scatter((0, 1, 2), (1, 3), fig_name='test')
+    plt.show()
+    grapher.fig.savefig(
+        '/Users/carlkristoftessier/Documents/all_that_programming/summerJob2020/Figures/big_scatter.png',
+        bbox_inches="tight",
+        dpi=600)
