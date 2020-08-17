@@ -41,3 +41,17 @@ def peak_tag_corr(df):
 
 
 #Pretty pic #2
+def gene_tag_count(df):
+
+    sns.barplot(x='Gene Type', y='', hue='')
+    X = df['Gene Name']
+    tag_data = pd.DataFrame([df.iloc[:, -i] for i in range(1, 7)]).T
+
+    for __, col_data in tag_data.iteritems():
+        sns.distplot(
+            X,
+            col_data,
+        )
+
+
+print(np.unique(df['Gene Name']))
