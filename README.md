@@ -3,4 +3,5 @@ The goal of this project was applying various neural networks to study gene expr
 The main product from the research is a variational autoencoder using crucially a gumbel-softmax activation,
 in order to have a approximated discrete output.
 
-Unfourtunately, I do not currently have access to the jupyter notebook containing the bulk of my work, but as soon as I do, it will be here.
+Unfortunately, I do not currently have access to the jupyter notebook containing the bulk of my work, but as soon as I do, it will be here.
+A preliminary version of the VAE model can be found in autoencoders.py
