@@ -3,8 +3,8 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 
-from tensorflow.keras.layers import Dense, Flatten, Input
 from tensorflow.keras import Model
+from tensorflow.keras.layers import Dense, Flatten, Input
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.optimizers import Adam
 from sklearn.datasets import load_iris
@@ -40,10 +40,14 @@ class MyInput(Model):
 
 
 class ModelBuilder():
-    def __init__(self, inputs, outputs, hidden_shape=None):
+    def __init__(self,
+                 inputs,
+                 outputs,
+                 prediction_type='categorical',
+                 hidden_shape=None):
         self.inputs = inputs
         self.outputs = outputs
-        self.prediction_type = 'categorical'
+        self.prediction_type = prediction_type
         self.hidden_shape = hidden_shape
         self.model = Model()
         self.splitter = train_test_split(inputs,
