@@ -1,0 +1,2 @@
+model_checkpoint_path: "DatasetsBigEpoch"
+all_model_checkpoint_paths: "DatasetsBigEpoch"
