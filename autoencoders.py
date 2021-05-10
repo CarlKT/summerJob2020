@@ -156,7 +156,7 @@ def generate_and_save_images(model, epoch, test_sample):
 
 
 if __name__ == '__main__':
-
+    print("yo")
     #import MNIST dataset
     (train_images, _), (test_images, _) = tf.keras.datasets.mnist.load_data()
     #reshape and make values between 0 and 1
