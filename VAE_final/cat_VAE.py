@@ -81,9 +81,9 @@ class VAE(Model):
             mean, log_var, z = self.encode(data)
             reconstruction = self.decode(z)
             cn = tf.keras.losses.categorical_crossentropy(data, reconstruction)
-            #reconstruction_loss = tf.reduce_sum(cn)
+            # reconstruction_loss = tf.reduce_sum(cn)
             reconstruction_loss = 504 * tf.reduce_mean(cn)
-            #reconstruction_loss = tf.reduce_mean(tf.reduce_sum(cn, axis=1))
+            # reconstruction_loss = tf.reduce_mean(tf.reduce_sum(cn, axis=1))
             kl_loss = 1 + log_var - tf.square(mean) - tf.exp(log_var)
             kl_loss = -0.5 * tf.reduce_mean(kl_loss)
             total_loss = reconstruction_loss + kl_loss
@@ -178,10 +178,10 @@ def split_seq(seq):
             split_seq[i, ind, n] = seq[ind, n]
     return split_seq
 
-# if __name__ == "__main__":
-#     load_dir = "/home/ctessier/tba/neural_nets/VAE_final/seq_avg.npy"
-#     seq_arr = np.load(load_dir, allow_pickle=True)
-#     seq = seq_arr[0][0]
-#     # print(seq[:,0])
-#     # print([i for i in reversed(np.argsort(seq[:,0]))])
-#     # print(split_seq(seq)[1])
+if __name__ == "__main__":
+    load_dir = "/home/ctessier/tba/neural_nets/VAE_final/seq_avg.npy"
+    seq_arr = np.load(load_dir, allow_pickle=True)
+    seq = seq_arr[0][0]
+    # print(seq[:,0])
+    # print([i for i in reversed(np.argsort(seq[:,0]))])
+    print(split_seq(seq)[1])
