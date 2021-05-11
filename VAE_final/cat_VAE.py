@@ -9,7 +9,68 @@ from tensorflow.keras.layers import Conv1D, Conv1DTranspose, Dense, Input, Activ
 import sklearn
 
 class VAE(Model):
+    """ Variational autoencoder for categorical data.
+        Parameters
+        ----------
+        inputShape : tuple
+            The shape of the data for which the model is trained on.
+            The input shape is the shape of one element in your dataset, 
+            not the shape of the dataset itself. 
+        latent_dim : int
+            Dimension of the encoded matrix. Default is 2.
+        tau : float 
+            Temperature of the Gumbel-Softmax activation. 
+            Using tau=0 discretizes the output of the decoder 
+            and the higher the temperature, the less discrete 
+            the output will be.
+        
+        Attributes
+        ----------
+        encoder : tf.keras.Model
+            c
+        decoder : tf.keras.Model
+            c
+        inputShape : tuple
+            The shape of the data for which the model is trained on.
+            The input shape is the shape of one element in your dataset, 
+            not the shape of the dataset itself. 
+        latent_dim : int
+            Dimension of the encoded matrix. Default is 2.
+        tau : float 
+            Temperature of the Gumbel-Softmax activation. 
+            Using tau=0 discretizes the output of the decoder 
+            and the higher the temperature, the less discrete 
+            the output will be.
+        
+        See also
+        --------
+        full_summary() : Prints the tensorflow summary of the model, as 
+            well as the models metavariables.
+        encode(x) : Helper function for the encoder layer. Returns mean, 
+            logvar and latent vectors of dimension equal to latent_dim. 
+        decode(z,hard=False) : Generates data from latent vectors, with 
+            the option to discretize the output.
+        
+        Notes
+        -----
+        Methods not mentioned are meant for backend and should not be used.
+    """
     def __init__(self, latent_dim, inputShape, temperature=1):
+        """
+            Parameters
+            ----------
+            inputShape : tuple
+                The shape of the data for which the model is trained on.
+                The input shape is the shape of one element in your dataset, 
+                not the shape of the dataset itself. 
+            latent_dim : int
+                Dimension of the encoded matrix. Default is 2.
+            tau : float 
+                Temperature of the Gumbel-Softmax activation. 
+                Using tau=0 discretizes the output of the decoder 
+                and the higher the temperature, the less discrete 
+                the output will be.
+        """
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         self.inputShape = inputShape
@@ -37,7 +98,7 @@ class VAE(Model):
                 Conv1DTranspose(8, 3, activation="relu", strides=2, padding="same"),
                 Conv1DTranspose(8, 3, activation="relu", strides=2, padding="same"),
                 Conv1DTranspose(5, 3, activation="relu", padding="same"),
-                tf.keras.layers.Activation(Gumbel_Softmax(temperature=self.tau))
+                Activation(Gumbel_Softmax(temperature=self.tau))
             ]
         )
     
@@ -47,9 +108,11 @@ class VAE(Model):
 
     @tf.function    
     def full_summary(self):
+        """Prints the model's summary"""
         print(self.encoder.summary())
         print(self.decoder.summary())
         print(
+            "Input shape: " + str(self.inputShape) + "\n" +
             "Latent dimension: " + str(self.latent_dim) + "\n" +
             "Temperature: " + str(self.tau)
         )
@@ -62,9 +125,10 @@ class VAE(Model):
     
     @tf.function
     def decode(self, z, hard=False):
-        #self.decoder.get_layer(index=-1).hard = hard
-        #reconstruction = self.decoder(z)
-        #self.decoder.get_layer(index=-1).hard = False
+        assert z.shape == (None, self.latent_dim), "Data to be decoded is incompatible with model. Recieved: " + str(z.shape) 
+        self.decoder.get_layer(index=-1).hard = hard
+        reconstruction = self.decoder(z)
+        self.decoder.get_layer(index=-1).hard = False
         return self.decoder(z)
     
     @tf.function
@@ -184,4 +248,4 @@ if __name__ == "__main__":
     seq = seq_arr[0][0]
     # print(seq[:,0])
     # print([i for i in reversed(np.argsort(seq[:,0]))])
-    print(split_seq(seq)[1])
+    # print(split_seq(seq)[1])
