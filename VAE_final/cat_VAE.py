@@ -125,10 +125,10 @@ class VAE(Model):
     
     @tf.function
     def decode(self, z, hard=False):
-        assert z.shape == (None, self.latent_dim), "Data to be decoded is incompatible with model. Recieved: " + str(z.shape) 
-        self.decoder.get_layer(index=-1).hard = hard
-        reconstruction = self.decoder(z)
-        self.decoder.get_layer(index=-1).hard = False
+        # assert z.shape == (None, self.latent_dim), "Data to be decoded is incompatible with model. Recieved: " + str(z.shape) 
+        # self.decoder.get_layer(index=-1).hard = hard
+        # reconstruction = self.decoder(z)
+        # self.decoder.get_layer(index=-1).hard = False
         return self.decoder(z)
     
     @tf.function

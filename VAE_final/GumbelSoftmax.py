@@ -37,7 +37,7 @@ class Gumbel_Softmax(tf.keras.layers.Layer):
         y = self.gumbel_softmax_sample(logits, temperature)
         if self.hard:
             k = tf.shape(logits)[-1]
-            #y_hard = tf.cast(tf.one_hot(tf.argmax(y,1),k), y.dtype)
+            # y_hard = tf.cast(tf.one_hot(tf.argmax(y,1),k), y.dtype)
             y_hard = tf.cast(tf.equal(y, tf.reduce_max(y, 1, keepdims=True)),
                              y.dtype)
             y = tf.stop_gradient(y_hard - y) + y
